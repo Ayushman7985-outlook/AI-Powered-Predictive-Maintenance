@@ -38,7 +38,7 @@ AI-Powered-Predictive-Maintenance/
     ├── train.py
     ├── evaluate.py
     ├── predict.py
-    └── visualization.py
+    ├── visualization.py\n    └── api.py
 ```
 
 ## Run on Windows (PowerShell)
@@ -107,3 +107,52 @@ git branch -M main
 git remote add origin YOUR_GITHUB_REPOSITORY_URL
 git push -u origin main
 ```
+
+## Flask REST API
+
+The project also provides a small HTTP API so another program can submit machine readings and receive the model's prediction. The API uses the same saved model pipeline as the Streamlit dashboard.
+
+### Start the API
+
+First install the dependencies and train the model if you have not already done so:
+
+```powershell
+pip install -r requirements.txt
+python -m src.train
+python -m src.api
+```
+
+The development API runs at `http://127.0.0.1:5000`. Keep this terminal open while using the API. The Streamlit dashboard can run separately in another terminal with `streamlit run app.py`.
+
+### Endpoints
+
+- `GET /` — API name, endpoint list, and required feature names.
+- `GET /health` — basic status and whether the saved model file exists.
+- `POST /predict` — validates machine readings and returns the model prediction.
+
+Example PowerShell request:
+
+```powershell
+$body = @{
+  "Type" = "L"
+  "Air temperature [K]" = 300.0
+  "Process temperature [K]" = 310.0
+  "Rotational speed [rpm]" = 1500
+  "Torque [Nm]" = 40.0
+  "Tool wear [min]" = 100
+} | ConvertTo-Json
+
+Invoke-RestMethod -Uri "http://127.0.0.1:5000/predict" -Method Post -ContentType "application/json" -Body $body
+```
+
+The response includes `prediction` (0 or 1), a readable `status`, estimated `risk_percent`, and `data_source`. These are model estimates, not guarantees of machine safety. The API accepts machine type `L`, `M`, or `H`; all five numeric sensor fields are required.
+
+### Run automated tests
+
+```powershell
+python -m pytest -q
+```
+
+The tests use Flask's test client and mock the model prediction where appropriate, so most API tests do not require a trained model or internet access. They cover successful responses, missing fields, invalid input, and missing-model handling.
+
+This Flask development server is intended for local demonstration. Do not expose it directly to the public internet or treat it as a production industrial control service.
