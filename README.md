@@ -14,7 +14,7 @@ A student-friendly machine-learning project that estimates machine-failure risk 
 - Saved model and metrics
 
 ## Tech stack
-Python, Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, Streamlit, Joblib.
+Python, Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, Streamlit, Flask, Joblib, pytest.
 
 ## Dataset
 UCI AI4I 2020 Predictive Maintenance Dataset: https://archive.ics.uci.edu/dataset/601/ai4i+2020+predictive+maintenance+dataset
@@ -39,6 +39,10 @@ AI-Powered-Predictive-Maintenance/
     ├── evaluate.py
     ├── predict.py
     ├── visualization.py\n    └── api.py
+└── tests/
+    ├── test_api.py
+    └── test_data_pipeline.py
+└── .github/workflows/python-ci.yml
 ```
 
 ## Run on Windows (PowerShell)
@@ -153,6 +157,8 @@ The response includes `prediction` (0 or 1), a readable `status`, estimated `ris
 python -m pytest -q
 ```
 
-The tests use Flask's test client and mock the model prediction where appropriate, so most API tests do not require a trained model or internet access. They cover successful responses, missing fields, invalid input, and missing-model handling.
+The tests use Flask's test client and mock the model prediction where appropriate, so most API tests do not require a trained model or internet access. They cover successful responses, missing fields, invalid input, and missing-model handling. Data-pipeline tests check reproducible demo data, required columns, preprocessing, and a small model-fit smoke test.
+
+GitHub Actions also runs the test suite and Python syntax checks on pushes and pull requests using Python 3.11 and 3.12.
 
 This Flask development server is intended for local demonstration. Do not expose it directly to the public internet or treat it as a production industrial control service.
