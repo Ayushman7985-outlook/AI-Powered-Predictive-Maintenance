@@ -25,23 +25,25 @@ The dataset is synthetic industrial data created for predictive-maintenance rese
 ```text
 AI-Powered-Predictive-Maintenance/
 ├── app.py
+├── main.py
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
 ├── data/raw/
 ├── models/
 ├── outputs/
-└── src/
-    ├── config.py
-    ├── data_loader.py
-    ├── preprocessing.py
-    ├── train.py
-    ├── evaluate.py
-    ├── predict.py
-    ├── visualization.py\n    └── api.py
-└── tests/
-    ├── test_api.py
-    └── test_data_pipeline.py
+├── src/
+│   ├── config.py
+│   ├── data_loader.py
+│   ├── preprocessing.py
+│   ├── train.py
+│   ├── evaluate.py
+│   ├── predict.py
+│   ├── visualization.py
+│   └── api.py
+├── tests/
+│   ├── test_api.py
+│   └── test_data_pipeline.py
 └── .github/workflows/python-ci.yml
 ```
 
